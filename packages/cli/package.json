@@ -1,0 +1,17 @@
+{
+  "name": "rolo",
+  "version": "0.1.0",
+  "description": "",
+  "bin": {
+    "rolo": "./bin/rolo.js"
+  },
+  "author": "Rayan Sailani",
+  "type": "module",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "commander": "^13.1.0",
+    "fs-extra": "^11.3.0",
+    "prompts": "^2.4.2"
+  }
+}
