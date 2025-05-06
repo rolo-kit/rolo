@@ -1,1 +1,10 @@
-node_modules
+# Node dependencies
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# CLI output (if any)
+dist/
