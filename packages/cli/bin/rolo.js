@@ -2,6 +2,7 @@
 
 import { Command } from "commander";
 import { initCommand } from "../commands/init.js";
+import devCommand from "../commands/dev/index.js";
 
 const program = new Command();
 
@@ -16,5 +17,7 @@ program
   .action(() => {
     initCommand();
   });
+
+devCommand(program);
 
 program.parse();

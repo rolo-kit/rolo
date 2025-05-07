@@ -13,5 +13,10 @@
     "commander": "^13.1.0",
     "fs-extra": "^11.3.0",
     "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "chokidar": "^4.0.3",
+    "esbuild": "^0.25.4",
+    "ws": "^8.18.2"
   }
 }
