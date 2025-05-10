@@ -37,6 +37,41 @@ Rolo is a modern CLI tool designed to streamline your web development workflow. 
    rolo build (work in progress)
    ```
 
+## Running Rolo Locally (Development)
+
+To run and test the Rolo CLI locally, use Node.js 20. Follow these steps:
+
+1. **Install dependencies** (from the project root):
+
+   ```sh
+   cd packages/cli
+   npm install
+   ```
+
+2. **Build the CLI package**:
+
+   ```sh
+   cd packages/cli
+   npm run build --workspace=cli
+   ```
+
+3. **Link the CLI globally** (so you can use `rolo` from anywhere):
+
+   ```sh
+   cd packages/cli
+   npm link
+   ```
+
+4. **Verify Node.js version** (should be 20):
+   ```sh
+   node -v
+   # v20.x.x
+   ```
+
+You can now use the `rolo` command globally for local development and testing.
+
+---
+
 ## CLI Commands
 
 - `rolo init` – Scaffold a new project
