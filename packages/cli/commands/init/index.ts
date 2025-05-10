@@ -2,12 +2,17 @@ import fs from "fs-extra";
 import prompts from "prompts";
 import chalk from "chalk";
 import path from "path";
-import { logSuccess, logError, logInfo } from "../utils/logger.js";
-import { copyTemplate } from "../utils/copyTemplate.js";
+import { logSuccess, logError, logInfo } from "../../utils/logger.js";
+import { copyTemplate } from "../../utils/copyTemplate.js";
 import { fileURLToPath } from "url";
+import { Command } from "commander";
 
-export async function initCommand() {
-  try {
+export async function initCommand(program: Command) {
+  program
+  .command("init [project-name] ")
+  .description("Initialise a new extension project")
+  .action(async () => {
+    try {
     // step 1: Fetch the user inputs
     const response = await prompts([
       {
@@ -25,7 +30,6 @@ export async function initCommand() {
         choices: [
           { title: "Vanilla JS", value: "vanilla" },
           { title: "React", value: "react" },
-          // { title: "Vue", value: "vue" },
         ],
       },
     ]);
@@ -62,4 +66,5 @@ export async function initCommand() {
   } catch (exception) {
     console.error(exception);
   }
+  });
 }

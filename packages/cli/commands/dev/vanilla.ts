@@ -66,7 +66,7 @@ export default async function vanillaDev() {
       });
       console.log("✅ Build complete");
     } catch (err) {
-      console.error("❌ Build failed:", err.message);
+      console.error("❌ Build failed:", (err as any).message);
     }
   }
 }

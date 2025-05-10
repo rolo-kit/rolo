@@ -6,7 +6,7 @@ export function setupWebsocketConnectionForReload() {
     return wss;
 } 
 
-export function notifyClients(wss) {
+export function notifyClients(wss: WebSocketServer) {
     wss.clients.forEach((client) => {
       if (client.readyState === 1) {
         client.send('reload')

@@ -3,7 +3,7 @@ import fs from "fs-extra";
 import { logError, logInfo } from "../../utils/logger.js";
 import vanillaDev from "./vanilla.js";
 
-export default function devCommand(program) {
+export default function devCommand(program: any) {
   program
     .command("dev")
     .description("Start dev server for Rolo extension")
