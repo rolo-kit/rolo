@@ -1,1 +1,1 @@
-console.log("Rolo - The chrome extension framework");
+console.log('Rolo - The chrome extension framework');
