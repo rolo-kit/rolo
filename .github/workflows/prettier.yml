@@ -1,17 +1,16 @@
-name: Build and Check
+name: Prettier Lint
 
 on:
-  push:
+  pull_request:
     branches:
       - '**'
-  pull_request:
+  push:
     branches:
       - '**'
 
 jobs:
-  build:
+  prettier:
     runs-on: macos-latest
-
     steps:
       - uses: actions/checkout@v4
       - name: Set up Node.js
@@ -20,7 +19,5 @@ jobs:
           node-version: '20'
       - name: Install dependencies
         run: npm install
-        working-directory: packages/cli
-      - name: Build CLI
-        run: npm run build
-        working-directory: packages/cli
+      - name: Run Prettier
+        run: npx prettier --check .
