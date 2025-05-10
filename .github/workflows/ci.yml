@@ -23,4 +23,3 @@ jobs:
         working-directory: packages/cli
       - name: Build CLI
         run: npm run build --prefix packages/cli
-        working-directory: packages/cli
