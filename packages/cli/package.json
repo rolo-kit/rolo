@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "",
   "bin": {
-    "rolo": "./bin/rolo.js"
+    "rolo": "./dist/bin/rolo.js"
   },
   "author": "Rayan Sailani",
   "type": "module",
@@ -17,6 +17,12 @@
   "devDependencies": {
     "chokidar": "^4.0.3",
     "esbuild": "^0.25.4",
-    "ws": "^8.18.2"
+    "ws": "^8.18.2",
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  },
+  "scripts": {
+    "build": "node esbuild.config.mjs && node copy-assets.mjs",
+    "start": "node ./dist/bin/rolo.js"
   }
 }
