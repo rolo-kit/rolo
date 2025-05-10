@@ -1,6 +1,6 @@
 # Rolo
 
-[![Prettier Lint](https://github.com/<your-username>/rolo/actions/workflows/prettier.yml/badge.svg)](https://github.com/<your-username>/rolo/actions/workflows/prettier.yml)
+[![Prettier Lint](https://github.com/rolo-kit/rolo/actions/workflows/prettier.yml/badge.svg)](https://github.com/rolo-kit/rolo/actions/workflows/prettier.yml)
 
 Rolo is a modern CLI tool designed to streamline your web development workflow. It provides fast project initialization, hot module reloading (HMR), and quick build capabilities for efficient development.
 
@@ -34,7 +34,7 @@ Rolo is a modern CLI tool designed to streamline your web development workflow. 
 
 4. **Build Your Project**:
    ```sh
-   rolo build
+   rolo build (work in progress)
    ```
 
 ## CLI Commands
@@ -50,7 +50,7 @@ Rolo is a modern CLI tool designed to streamline your web development workflow. 
 
 ## Build Status
 
-[![Prettier Lint](https://github.com/<your-username>/rolo/actions/workflows/prettier.yml/badge.svg)](https://github.com/<your-username>/rolo/actions/workflows/prettier.yml)
+[![Prettier Lint](https://github.com/rolo-kit/rolo/actions/workflows/prettier.yml/badge.svg)](https://github.com/rolo-kit/rolo/actions/workflows/prettier.yml)
 
 ---
 
