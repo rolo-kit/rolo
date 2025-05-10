@@ -8,3 +8,15 @@ yarn-error.log*
 
 # CLI output (if any)
 dist/
+packages/cli/dist
+packages/cli/node_modules
+
+# Mac system files
+.DS_Store
+
+# VSCode settings
+.vscode/
+
+# Env files
+.env
+.env.*
