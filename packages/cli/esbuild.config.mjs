@@ -4,12 +4,11 @@ import { nodeExternalsPlugin } from "esbuild-node-externals";
 esbuild.build({
   entryPoints: [
     "bin/rolo.ts",
-    "commands/init.ts",
-    "commands/dev/index.ts",
-    "commands/dev/vanilla.ts",
-    "utils/copyTemplate.ts",
-    "utils/logger.ts",
-    "utils/reloadSocketUtils.ts"
+    "commands/**/**.ts",
+    "commands/**/**.ts",
+    "commands/**/**.ts",
+    "utils/**.ts",
+    "utils/**.ts",
   ],
   outdir: "dist",
   bundle: false,
