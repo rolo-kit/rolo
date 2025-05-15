@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "",
   "bin": {
-    "rolo": "./dist/bin/rolo.js"
+    "rolo": "./dist/rolo.js"
   },
   "author": "Rayan Sailani",
   "type": "module",
