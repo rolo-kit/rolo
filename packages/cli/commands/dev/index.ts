@@ -13,7 +13,6 @@ export default function devCommand(program: any) {
         logError('rolo.config.json not found');
         process.exit(1);
       }
-
       const config = JSON.parse(await fs.readFile(configPath, 'utf-8'));
       // todo: implement a process level cache later to have the rolo config in memory
 

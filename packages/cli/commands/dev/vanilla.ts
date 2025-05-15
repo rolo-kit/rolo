@@ -2,7 +2,10 @@ import fs from 'fs-extra';
 import path from 'path';
 import chokidar from 'chokidar';
 import esbuild from 'esbuild';
-import { notifyClients, setupWebsocketConnectionForReload } from '../../utils/reloadSocketUtils.js';
+import {
+  notifyClients,
+  setupWebsocketConnectionForReload,
+} from '../../utils/reloadSocketUtils.js';
 
 export default async function vanillaDev() {
   console.log('🚀 Starting dev server for Vanilla JS project...');
