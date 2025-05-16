@@ -1,9 +1,10 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
+import roloReloadPlugin from './vite-extension-reload-config';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), roloReloadPlugin()],
   build: {
     rollupOptions: {
       input: {

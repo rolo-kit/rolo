@@ -19,5 +19,6 @@ esbuild
     target: ['node20'],
     plugins: [nodeExternalsPlugin()],
     tsconfig: 'tsconfig.json',
+    minify: true,
   })
   .catch(() => process.exit(1));

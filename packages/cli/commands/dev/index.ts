@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs-extra';
 import { logError, logInfo } from '../../utils/logger.js';
 import vanillaDev from './vanilla.js';
+import reactDev from './react.js';
 
 export default function devCommand(program: any) {
   program
@@ -23,8 +24,7 @@ export default function devCommand(program: any) {
           vanillaDev();
           break;
         case 'react':
-          logInfo('Build command for react is WIP');
-          logInfo('execute npm build manually to create executable');
+          reactDev();
           break;
         default:
           logError(
