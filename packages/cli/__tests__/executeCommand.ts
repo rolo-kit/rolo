@@ -3,8 +3,8 @@ import path from 'path';
 import stripAnsi from 'strip-ansi';
 
 type PromptHandler = (
-  promptNo: number,
-  promptText: string
+  promptNo?: number,
+  promptText?: string
 ) => string | void | Promise<string | void>;
 
 export function executeCommandInteractive(
@@ -26,11 +26,7 @@ export function executeCommandInteractive(
       const str = data.toString();
       stdout += str;
       // Remove ANSI escape codes
-      const cleanStr = stripAnsi(str);
-      const clean = cleanStr;
-      // Only respond to finalized prompt (contains checkmark or template selection)
-      // if (clean.includes('✔')) {
-      // try {
+      const clean = stripAnsi(str);
       const response = await onPrompt(promptNo, clean.trim());
       if (typeof response === 'string') {
         child.stdin.write(response + '\n');
@@ -38,8 +34,6 @@ export function executeCommandInteractive(
         await child.stdin.end();
       }
       promptNo++;
-      // }
-      // }
     });
 
     child.stderr.on('data', (data) => {
