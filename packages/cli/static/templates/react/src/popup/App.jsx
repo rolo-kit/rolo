@@ -1,8 +1,10 @@
+import './styles.css';
 export default function App() {
   return (
-    <div style={{ padding: 12, fontFamily: 'sans-serif' }}>
-      <h1>🔧 Rolo Extension</h1>
-      <p>This is a popup built with React!</p>
+    <div className="container">
+      <h1>Rolo</h1>
+      <p>The modern web extension framework</p>
+      <button id="hmr-test">Click Me</button>
     </div>
   );
 }
