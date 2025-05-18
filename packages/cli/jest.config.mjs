@@ -6,6 +6,6 @@ export default {
   moduleFileExtensions: ['ts', 'js', 'json', 'node'],
   extensionsToTreatAsEsm: ['.ts'],
   transform: {
-    '^.+\\.ts$': ['ts-jest', { useESM: true }]
-  }
+    '^.+\\.ts$': ['ts-jest', { useESM: true }],
+  },
 };

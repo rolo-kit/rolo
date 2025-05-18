@@ -1,4 +1,10 @@
-import { exec, spawn, ChildProcess, ExecOptions, SpawnOptions } from 'child_process';
+import {
+  exec,
+  spawn,
+  ChildProcess,
+  ExecOptions,
+  SpawnOptions,
+} from 'child_process';
 import { promisify } from 'util';
 import path from 'path';
 
@@ -34,19 +40,22 @@ export interface InteractiveCommandOptions extends SpawnOptions {
  * @param options Optional exec options
  * @returns An object containing stdout, stderr, and exit code
  */
-export function executeCommand(command: string, options?: ExecOptions): CommandResult {
+export function executeCommand(
+  command: string,
+  options?: ExecOptions
+): CommandResult {
   try {
     const { stdout, stderr } = exec(command, options);
     return {
       stdout: stdout.toString(),
       stderr: stderr.toString(),
-      code: 0
+      code: 0,
     };
   } catch (error: any) {
     return {
       stdout: error.stdout ? error.stdout.toString() : '',
       stderr: error.stderr ? error.stderr.toString() : error.message,
-      code: error.code || 1
+      code: error.code || 1,
     };
   }
 }
@@ -58,7 +67,7 @@ export function executeCommand(command: string, options?: ExecOptions): CommandR
  * @returns Promise resolving to an object containing stdout, stderr, and exit code
  */
 export async function executeCommandAsync(
-  command: string, 
+  command: string,
   options?: ExecOptions
 ): Promise<CommandResult> {
   try {
@@ -66,13 +75,13 @@ export async function executeCommandAsync(
     return {
       stdout: stdout,
       stderr: stderr,
-      code: 0
+      code: 0,
     };
   } catch (error: any) {
     return {
       stdout: error.stdout ? error.stdout.toString() : '',
       stderr: error.stderr ? error.stderr.toString() : error.message,
-      code: error.code || 1
+      code: error.code || 1,
     };
   }
 }
@@ -90,18 +99,18 @@ export function spawnInteractiveCommand(
   options: InteractiveCommandOptions = {}
 ): ChildProcess {
   const { onStdout, onStderr, onClose, ...spawnOptions } = options;
-  
+
   // Default to pipe for stdio if not specified
   const defaultedOptions: SpawnOptions = {
     stdio: ['pipe', 'pipe', 'pipe'],
-    ...spawnOptions
+    ...spawnOptions,
   };
-  
+
   const child = spawn(command, args, defaultedOptions);
-  
+
   let stdout = '';
   let stderr = '';
-  
+
   if (child.stdout) {
     child.stdout.on('data', (data: Buffer) => {
       const str = data.toString();
@@ -109,7 +118,7 @@ export function spawnInteractiveCommand(
       if (onStdout) onStdout(str);
     });
   }
-  
+
   if (child.stderr) {
     child.stderr.on('data', (data: Buffer) => {
       const str = data.toString();
@@ -117,14 +126,14 @@ export function spawnInteractiveCommand(
       if (onStderr) onStderr(str);
     });
   }
-  
+
   child.on('close', (code: number | null) => {
     if (onClose) onClose(code);
-    
+
     // Clean up streams to avoid open handles
     cleanupChildProcess(child);
   });
-  
+
   return child;
 }
 
@@ -153,19 +162,19 @@ export function spawnCommandAsync(
   return new Promise((resolve) => {
     let stdout = '';
     let stderr = '';
-    
-    const child = spawnInteractiveCommand(
-      command,
-      args,
-      {
-        ...options,
-        onStdout: (data) => { stdout += data; },
-        onStderr: (data) => { stderr += data; },
-        onClose: (code) => {
-          resolve({ stdout, stderr, code });
-        }
-      }
-    );
+
+    const child = spawnInteractiveCommand(command, args, {
+      ...options,
+      onStdout: (data) => {
+        stdout += data;
+      },
+      onStderr: (data) => {
+        stderr += data;
+      },
+      onClose: (code) => {
+        resolve({ stdout, stderr, code });
+      },
+    });
   });
 }
 
@@ -184,10 +193,10 @@ export function executeNpmCommand(
   const isWindows = process.platform === 'win32';
   const npmCmd = isWindows ? 'npm.cmd' : 'npm';
   const args = command.split(' ');
-  
-  return spawnCommandAsync(npmCmd, args, { 
+
+  return spawnCommandAsync(npmCmd, args, {
     cwd,
-    ...options 
+    ...options,
   });
 }
 
@@ -220,7 +229,7 @@ export interface InteractivePromptOptions extends SpawnOptions {
 /**
  * Executes a command that expects interactive prompts and responds automatically
  * Based on the pattern used in cli-init.test.ts
- * 
+ *
  * @param command The command to execute
  * @param args Command arguments
  * @param options Options including prompt responses and debug mode
@@ -233,33 +242,34 @@ export function executeWithPrompts(
 ): Promise<CommandResult> {
   return new Promise((resolve) => {
     const { prompts, debug = false, onComplete, ...spawnOptions } = options;
-    
+
     const child = spawn(command, args, {
       stdio: ['pipe', 'pipe', 'pipe'],
-      ...spawnOptions
+      ...spawnOptions,
     });
 
     let output = '';
     let errorOutput = '';
     let promptNo = 0;
-    
+
     child.stdout?.on('data', (data) => {
       const str = data.toString();
       output += str;
-      
+
       if (debug) {
         console.log(`[DEBUG] STDOUT: ${str.trim()}`);
       }
-      
+
       // Check if current output matches any prompt pattern
       if (promptNo < prompts.length) {
         const currentPrompt = prompts[promptNo];
         const pattern = currentPrompt.pattern;
-        
-        const matched = typeof pattern === 'string' 
-          ? str.includes(pattern) 
-          : pattern.test(str);
-          
+
+        const matched =
+          typeof pattern === 'string'
+            ? str.includes(pattern)
+            : pattern.test(str);
+
         if (matched) {
           if (currentPrompt.handler) {
             currentPrompt.handler(child, str);
@@ -269,11 +279,11 @@ export function executeWithPrompts(
               console.log(`[DEBUG] Responding with: ${currentPrompt.response}`);
             }
           }
-          
+
           if (currentPrompt.endAfter) {
             child.stdin?.end();
           }
-          
+
           promptNo++;
         }
       }
@@ -282,7 +292,7 @@ export function executeWithPrompts(
     child.stderr?.on('data', (data) => {
       const str = data.toString();
       errorOutput += str;
-      
+
       if (debug) {
         console.error(`[DEBUG] STDERR: ${str.trim()}`);
       }
@@ -291,23 +301,23 @@ export function executeWithPrompts(
     child.on('close', (code) => {
       // Clean up streams to avoid open handles
       cleanupChildProcess(child);
-      
+
       if (code !== 0 && debug) {
         console.error('Command exited with code:', code);
         console.error('STDOUT:', output);
         console.error('STDERR:', errorOutput);
       }
-      
+
       const result = {
         stdout: output,
         stderr: errorOutput,
-        code
+        code,
       };
-      
+
       if (onComplete) {
         onComplete(result);
       }
-      
+
       resolve(result);
     });
   });
@@ -315,7 +325,7 @@ export function executeWithPrompts(
 
 /**
  * Simplified version for common CLI interactions that follows the pattern from cli-init.test.ts
- * 
+ *
  * @param command Command to execute (e.g., 'node')
  * @param args Command arguments (e.g., ['script.js', 'init'])
  * @param promptPatterns Array of [pattern, response] tuples in expected order
@@ -328,11 +338,13 @@ export function executeCliWithPrompts(
   promptPatterns: Array<[string | RegExp, string, boolean?]>,
   options: SpawnOptions = {}
 ): Promise<CommandResult> {
-  const prompts = promptPatterns.map(([pattern, response, endAfter = false]) => ({
-    pattern,
-    response,
-    endAfter
-  }));
-  
+  const prompts = promptPatterns.map(
+    ([pattern, response, endAfter = false]) => ({
+      pattern,
+      response,
+      endAfter,
+    })
+  );
+
   return executeWithPrompts(command, args, { prompts, ...options });
 }

@@ -29,11 +29,15 @@ export class CommandPromptBuilder {
    * @param response Response to send when pattern is matched
    * @param endAfter Whether to end stdin after this response
    */
-  addPrompt(pattern: string | RegExp, response: string, endAfter: boolean = false): this {
+  addPrompt(
+    pattern: string | RegExp,
+    response: string,
+    endAfter: boolean = false
+  ): this {
     this.prompts.push({
       pattern,
       response,
-      endAfter
+      endAfter,
     });
     return this;
   }
@@ -50,7 +54,7 @@ export class CommandPromptBuilder {
     this.prompts.push({
       pattern,
       response: '',
-      handler
+      handler,
     });
     return this;
   }
@@ -90,7 +94,7 @@ export class CommandPromptBuilder {
       prompts: this.prompts,
       debug: this.debugMode,
       cwd: this.workingDir,
-      env: this.env
+      env: this.env,
     });
   }
 
@@ -129,10 +133,10 @@ export async function executeWithConfirmations(
   yesForAll: boolean = true
 ) {
   const builder = new CommandPromptBuilder(command, args);
-  
+
   for (const pattern of confirmations) {
     builder.addPrompt(pattern, yesForAll ? 'y' : 'n');
   }
-  
+
   return builder.execute();
 }
