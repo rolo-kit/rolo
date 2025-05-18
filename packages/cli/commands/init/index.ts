@@ -22,21 +22,27 @@ import {
 export async function initCommand(program: Command) {
   let projectNameSpace = '';
   program
-    .command('init [project-name] ')
+    .command('init [projectName]')
     .description('Initialise a new extension project')
-    .action(async () => {
+    .option('-t,  --template <template>', 'Template to use (vanilla|react)')
+    .action(async (projectNameArg, options) => {
       try {
-        // step 1: Fetch the user inputs
-        const response = await prompts([
-          {
+        // step 1: Fetch the user inputs or generate prompts
+        let projectName = projectNameArg;
+        let template = options.template;
+
+        if (!projectName) {
+          projectName = await prompts({
             type: 'text',
             name: 'projectName',
             message: 'What is the name of  your extension?',
             initial: 'my-extension',
             validate: (name) =>
               name.trim() === '' ? 'Project name is required!' : true,
-          },
-          {
+          });
+        }
+        if (!template) {
+          template = await prompts({
             type: 'select',
             name: 'template',
             message: 'Choose a template',
@@ -44,10 +50,8 @@ export async function initCommand(program: Command) {
               { title: 'Vanilla JS', value: 'vanilla' },
               { title: 'React', value: 'react' },
             ],
-          },
-        ]);
-
-        const { projectName, template } = response;
+          });
+        }
         const targetDir = path.resolve(process.cwd(), projectName);
         let createdDir = false;
         const formattedProjectName = formatProjectName(projectName);
@@ -74,26 +78,26 @@ export async function initCommand(program: Command) {
         processCache.set(createKey(projectName, createdDirKey), createdDir);
 
         // step 3:copy selected template
+        // Always resolve from the CLI package root (dist/static/templates)
         const __fileName = fileURLToPath(import.meta.url);
         const __dirname = path.dirname(__fileName);
-        const templateDirectory = path.resolve(
+        const cliRoot = path.resolve(
           __dirname,
-          '..',
-          'static',
-          'templates',
+          '../../static/templates',
           template
         );
-        await copyTemplate(templateDirectory, targetDir);
+        await copyTemplate(cliRoot, targetDir);
 
         // step 4:display success message
         logSuccess(
           `✅ Project "${projectName}" created using "${template}" template!`
         );
         logInfo(
-          `\nNext steps:\n\t 1. cd ${projectName}\n\t 2. npm install\n\t 3. npm run dev`
+          `\nNext steps:\n\t 1. cd ${projectName}\n\t 2. npm install\n\t 3. rolo dev`
         );
       } catch (exception) {
         // Remove the created directory on error
+        console.log(exception);
         if (processCache.get(createKey(projectNameSpace, createdDirKey))) {
           const targetDir = processCache.get(
             createKey(projectNameSpace, targetDirKey)

@@ -24,3 +24,6 @@ jobs:
       - name: Build CLI
         run: npm run build
         working-directory: packages/cli
+      - name: Run tests
+        run: npm run test
+        working-directory: packages/cli
