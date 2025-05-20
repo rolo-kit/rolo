@@ -32,17 +32,17 @@ export async function initCommand(program: Command) {
         let template = options.template;
 
         if (!projectName) {
-          projectName = await prompts({
+          ({ projectName } = await prompts({
             type: 'text',
             name: 'projectName',
             message: 'What is the name of  your extension?',
             initial: 'my-extension',
             validate: (name) =>
               name.trim() === '' ? 'Project name is required!' : true,
-          });
+          }));
         }
         if (!template) {
-          template = await prompts({
+          ({ template } = await prompts({
             type: 'select',
             name: 'template',
             message: 'Choose a template',
@@ -50,7 +50,7 @@ export async function initCommand(program: Command) {
               { title: 'Vanilla JS', value: 'vanilla' },
               { title: 'React', value: 'react' },
             ],
-          });
+          }));
         }
         const targetDir = path.resolve(process.cwd(), projectName);
         let createdDir = false;
