@@ -10,6 +10,7 @@
     "url": "https://github.com/rolo-kit/rolo.git",
     "directory": "packages/cli"
   },
+  "homepage": "https://rolo-docs.vercel.app/",
   "author": "Rayan Sailani",
   "type": "module",
   "license": "MIT",
