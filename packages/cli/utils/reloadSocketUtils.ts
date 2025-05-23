@@ -6,6 +6,15 @@ export function setupWebsocketConnectionForReload() {
   return wss;
 }
 
+export function closeWebsocketServer(wss: WebSocketServer) {
+  return new Promise<void>((resolve, reject) => {
+    wss.close((err) => {
+      if (err) reject(err);
+      else resolve();
+    });
+  });
+}
+
 export function notifyClients(wss: WebSocketServer) {
   wss.clients.forEach((client) => {
     if (client.readyState === 1) {

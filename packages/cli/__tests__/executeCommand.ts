@@ -37,7 +37,8 @@ export function executeCommandInteractive(
     });
 
     child.stderr.on('data', (data) => {
-      stderr += data.toString();
+      // in case of debuggers it might lead them here. hence commenting.
+      // stderr += data.toString();
     });
 
     child.on('close', (code: number) => {
