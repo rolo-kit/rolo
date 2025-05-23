@@ -35,7 +35,7 @@ Rolo is a modern CLI tool designed to streamline your web development workflow. 
 
 4. **Build Your Project**:
    ```sh
-   rolo build (work in progress)
+   rolo build
    ```
 
 ## Running Rolo Locally (Development)
@@ -81,7 +81,7 @@ You can now use the `rolo` command globally for local development and testing.
 
 ## Templates
 
-- **React**: Modern React setup with Vite (works, but HMR is work in progress)
+- **React**: Modern React setup with Vite
 - **Vanilla JS**: Lightweight vanilla JavaScript template
 
 ## Build Status
