@@ -1,11 +1,12 @@
 import fs from 'fs-extra';
 import path from 'path';
 import chokidar from 'chokidar';
-import esbuild from 'esbuild';
+import { vanillaBuild } from '../build/vanilla.js';
 import {
   notifyClients,
   setupWebsocketConnectionForReload,
 } from '../../utils/reloadSocketUtils.js';
+import { logSuccess } from '../../utils/logger.js';
 
 export default async function vanillaDev() {
   console.log('🚀 Starting dev server for Vanilla JS project...');
@@ -14,11 +15,25 @@ export default async function vanillaDev() {
   const srcDir = path.join(cwd, 'src');
   const publicDir = path.join(cwd, 'public');
   const distDir = path.join(cwd, 'dist');
+  const { closeWebsocketServer } = await import(
+    '../../utils/reloadSocketUtils.js'
+  );
 
   const webSocketServer = setupWebsocketConnectionForReload();
   notifyClients(webSocketServer);
 
   await buildAll();
+
+  const shutdown = async () => {
+    try {
+      await closeWebsocketServer(webSocketServer);
+      process.exit(0);
+    } catch (e) {
+      process.exit(1);
+    }
+  };
+  process.on('SIGINT', shutdown);
+  process.on('SIGTERM', shutdown);
 
   chokidar.watch([srcDir, publicDir]).on('change', async (changedPath) => {
     console.log(`🔄 Detected change in ${changedPath}`);
@@ -27,14 +42,12 @@ export default async function vanillaDev() {
   });
 
   async function buildAll() {
-    await fs.remove(distDir);
-    await fs.copy(publicDir, distDir);
-
+    await vanillaBuild({ srcDir, publicDir, distDir });
+    logSuccess('Build complete');
     // Inject live reload script in index.html
     const htmlPath = path.join(distDir, 'index.html');
     if (await fs.pathExists(htmlPath)) {
       let html = await fs.readFile(htmlPath, 'utf-8');
-
       const reloadScript = `
         <script>
           (() => {
@@ -49,24 +62,10 @@ export default async function vanillaDev() {
             }
           })();
         </script>`;
-
-      // Avoid double injection
       if (!html.includes('ws://localhost:35729')) {
         html = html.replace('</body>', `${reloadScript}</body>`);
         await fs.writeFile(htmlPath, html, 'utf-8');
       }
-    }
-
-    try {
-      await esbuild.build({
-        entryPoints: [path.join(srcDir, 'index.js')],
-        bundle: true,
-        minify: true,
-        outfile: path.join(distDir, 'index.js'),
-      });
-      console.log('✅ Build complete');
-    } catch (err) {
-      console.error('❌ Build failed:', (err as any).message);
     }
   }
 }

@@ -3,6 +3,7 @@ import path from 'path';
 import { executeCommandInteractive } from './executeCommand';
 import { describe, test, expect, afterAll } from '@jest/globals';
 import { spawn } from 'child_process';
+import { closeWebsocketServer } from '../utils/reloadSocketUtils';
 
 // Helper to wait for a file or directory to exist
 async function waitForExists(filePath: string, timeout = 10000) {
@@ -27,7 +28,13 @@ describe('CLI dev command (HMR & build)', () => {
   const distDir = path.join(projectDir, 'dist');
   const srcFile = path.join(projectDir, 'src', 'index.js');
 
+  let webSocketServer: any = null;
+
   afterAll(async () => {
+    if (webSocketServer) {
+      await closeWebsocketServer(webSocketServer);
+      webSocketServer = null;
+    }
     if (await fs.pathExists(projectDir)) {
       await fs.remove(projectDir);
     }
@@ -63,8 +70,6 @@ describe('CLI dev command (HMR & build)', () => {
       path.join(distDir, 'index.js'),
       20000 // Increase timeout to 30 seconds
     );
-    console.log('DEV STDOUT:', devStdout);
-    console.log('DEV STDERR:', devStderr);
     expect(buildReady).toBe(true);
 
     // 4. Listen for HMR/reload message in stdout
