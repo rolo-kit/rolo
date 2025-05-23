@@ -18,7 +18,7 @@ Rolo is a modern CLI tool designed to streamline your web development workflow. 
 1. **Install Rolo** (if published to npm):
 
    ```sh
-   npm install -g rolo
+   npm install -g rolo-cli
    ```
 
 2. **Initialize a New Project**:
