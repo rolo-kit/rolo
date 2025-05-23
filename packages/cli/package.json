@@ -1,6 +1,6 @@
 {
   "name": "rolo-cli",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "bin": {
     "rolo": "./dist/bin/rolo.js"
@@ -10,6 +10,7 @@
     "url": "https://github.com/rolo-kit/rolo.git",
     "directory": "packages/cli"
   },
+  "homepage": "https://rolo-docs.vercel.app/",
   "author": "Rayan Sailani",
   "type": "module",
   "license": "MIT",
