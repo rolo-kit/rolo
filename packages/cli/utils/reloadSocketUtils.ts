@@ -8,7 +8,7 @@ export function setupWebsocketConnectionForReload() {
 
 export function closeWebsocketServer(wss: WebSocketServer) {
   return new Promise<void>((resolve, reject) => {
-    wss.close((err) => {
+    wss.close((err?: Error) => {
       if (err) reject(err);
       else resolve();
     });
