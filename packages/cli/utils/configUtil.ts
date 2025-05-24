@@ -18,16 +18,34 @@ export async function readConfigFile() {
   }
 }
 
-export function parseConfigValue(value: string): any {
+export function parseConfigValue(value: string): string | string[] {
   try {
-    return JSON.parse(value);
+    return JSON.parse(value.replace(/'/g, '"'));
   } catch {
     return value;
   }
 }
 
 export function mergeConfigObjects(existing: any, incoming: any) {
-  return { ...existing, ...incoming };
+  if (Array.isArray(existing) && Array.isArray(incoming)) {
+    // Merge arrays, deduplicate using Set, return as array
+    return Array.from(new Set([...existing, ...incoming]));
+  } else if (Array.isArray(existing)) {
+    // Add single value to array, deduplicate
+    return Array.from(new Set([...existing, incoming]));
+  } else if (Array.isArray(incoming)) {
+    // Add array to single value, deduplicate
+    return Array.from(new Set([existing, ...incoming]));
+  } else if (
+    typeof existing === 'object' && existing !== null &&
+    typeof incoming === 'object' && incoming !== null
+  ) {
+    // Shallow merge objects
+    return { ...existing, ...incoming };
+  } else {
+    // Fallback: replace
+    return incoming;
+  }
 }
 
 export async function readFile(configPath: string) {
@@ -36,7 +54,7 @@ export async function readFile(configPath: string) {
   }
 }
 
-export async function writeToConfigFile(config: any, options: any) {
+export async function writeToConfigFile(config: any, options?: any) {
   try {
     const configPath = path.join(process.cwd(), 'rolo.config.json');
     await fs.writeJson(configPath, config, { spaces: 2 });
@@ -85,17 +103,12 @@ export async function removeConfigKey(config: any, key: string) {
 }
 
 export function checkIfKeyIsMergeableObject(
-  config: any,
-  key: string,
+  existingValue: any,
   parsedValue: any
 ): boolean {
   return (
-    config.hasOwnProperty(key) &&
-    typeof config[key] === 'object' &&
-    config[key] !== null &&
-    typeof parsedValue === 'object' &&
+    existingValue !== null &&
     parsedValue !== null &&
-    !Array.isArray(parsedValue) &&
-    !Array.isArray(config[key])
+    Array.isArray(existingValue)
   );
 }

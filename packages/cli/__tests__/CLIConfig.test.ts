@@ -80,4 +80,52 @@ describe('rolo config command', () => {
     const config = await fs.readJson(configPath);
     expect(config.arr).toEqual([3, 4]);
   });
+
+  test('appends to array and deduplicates with --add', async () => {
+    // Set initial array
+    await executeCommandInteractive(
+      cliBin,
+      ['config', '-k', 'arr', '-v', '[1,2,3]'],
+      () => undefined,
+      projectDir
+    );
+    // Append values (including duplicate)
+    await executeCommandInteractive(
+      cliBin,
+      ['config', '-k', 'arr', '-v', '[2,3,4]', '--add'],
+      () => undefined,
+      projectDir
+    );
+    const config = await fs.readJson(configPath);
+    // Should deduplicate and append
+    expect(config.arr.sort()).toEqual([1, 2, 3, 4]);
+  });
+
+  test('appending to string key with --add just overwrites', async () => {
+    await executeCommandInteractive(
+      cliBin,
+      ['config', '-k', 'foo', '-v', 'bar'],
+      () => undefined,
+      projectDir
+    );
+    await executeCommandInteractive(
+      cliBin,
+      ['config', '-k', 'foo', '-v', 'baz', '--add'],
+      () => undefined,
+      projectDir
+    );
+    const config = await fs.readJson(configPath);
+    expect(config.foo).toBe('baz');
+  });
+
+  test('parses value robustly (malformed JSON falls back to string)', async () => {
+    await executeCommandInteractive(
+      cliBin,
+      ['config', '-k', 'foo', '-v', '{notjson}'],
+      () => undefined,
+      projectDir
+    );
+    const config = await fs.readJson(configPath);
+    expect(config.foo).toBe('{notjson}');
+  });
 });
