@@ -23,5 +23,6 @@ rolo dev
 - On error: Logs error and exits.
 
 ## Notes
+
 - Output is placed in the `dist/` directory.
 - Live reload is enabled for fast development.

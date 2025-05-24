@@ -22,5 +22,6 @@ rolo build
 - On error: Logs error and exits.
 
 ## Notes
+
 - Output is placed in the `dist/` directory.
 - Make sure your `rolo.config.json` is correctly configured.

@@ -24,4 +24,5 @@ rolo init [projectName] [options]
 - Logs success or error messages.
 
 ## Notes
+
 - Run this command in the directory where you want to create your new extension project.

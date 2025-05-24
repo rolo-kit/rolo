@@ -26,21 +26,25 @@ rolo config [options]
 ## Examples
 
 **Set a config value:**
+
 ```sh
 rolo config --key name --value "My Extension"
 ```
 
 **Set a JSON array value:**
+
 ```sh
 rolo config --key permissions --value '["storage","tabs"]'
 ```
 
 **Add a value to an existing array property:**
+
 ```sh
 rolo config --key permissions --value 'cookies' --add
 ```
 
 **Remove a config key:**
+
 ```sh
 rolo config --key permissions --remove
 ```
