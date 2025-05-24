@@ -37,8 +37,10 @@ export function mergeConfigObjects(existing: any, incoming: any) {
     // Add array to single value, deduplicate
     return Array.from(new Set([existing, ...incoming]));
   } else if (
-    typeof existing === 'object' && existing !== null &&
-    typeof incoming === 'object' && incoming !== null
+    typeof existing === 'object' &&
+    existing !== null &&
+    typeof incoming === 'object' &&
+    incoming !== null
   ) {
     // Shallow merge objects
     return { ...existing, ...incoming };
