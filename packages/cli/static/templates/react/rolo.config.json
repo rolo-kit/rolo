@@ -1,3 +1,11 @@
 {
-  "templateType": "react"
+  "templateType": "react",
+  "manifest_version": 3,
+  "name": "Rolo React Extension",
+  "description": "A React-based Chrome extension template",
+  "version": "1.0",
+  "action": {
+    "default_popup": "index.html"
+  },
+  "permissions": []
 }

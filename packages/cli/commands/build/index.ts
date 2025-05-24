@@ -4,6 +4,7 @@ import { logSuccess, logError, logInfo } from '../../utils/logger.js';
 import { Command } from 'commander';
 import { exec } from 'child_process';
 import { vanillaBuild } from './vanilla.js';
+import { injectConfigIntoManifest } from '../../utils/configToManifest.js';
 
 export async function buildCommand(program: Command) {
   program
@@ -56,8 +57,9 @@ export async function buildCommand(program: Command) {
         if (await fs.pathExists(publicDir)) {
           await fs.copy(publicDir, outDir, { overwrite: true });
         }
+
         logSuccess(
-          '✅ Production build complete! Output is in the dist/ folder and ready for Chrome Web Store upload.'
+          'Production build complete! Output is in the dist/ folder and ready for Chrome Web Store upload.'
         );
       } catch (e) {
         if (e instanceof Error) {
