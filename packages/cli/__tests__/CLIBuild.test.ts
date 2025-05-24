@@ -36,18 +36,24 @@ describe('CLI build command', () => {
     // 2. Run the build command and capture output
     let buildStdout = '';
     let buildStderr = '';
-    await executeCommandInteractive(cliBin, ['build'], async (data) => {
-      const jsExists = await waitForExists(path.join(distDir, 'index.js'));
-      const manifestExists = await waitForExists(
-        path.join(distDir, 'manifest.json')
-      );
-      expect(jsExists).toBe(true);
-      expect(manifestExists).toBe(true);
+    await executeCommandInteractive(
+      cliBin,
+      ['build'],
+      () => undefined,
+      projectDir
+    );
 
-      // 4. Check that the output is minified (very few line breaks)
-      const jsContentRaw = await fs.readFile(path.join(distDir, 'index.js'));
-      const jsContent = jsContentRaw.toString();
-      expect(jsContent.split('\n').length).toBeLessThan(10);
-    });
+    // Check that the dist directory was created
+    const jsExists = await waitForExists(path.join(distDir, 'index.js'));
+    const manifestExists = await waitForExists(
+      path.join(distDir, 'manifest.json')
+    );
+    expect(jsExists).toBe(true);
+    expect(manifestExists).toBe(true);
+
+    // 4. Check that the output is minified (very few line breaks)
+    const jsContentRaw = await fs.readFile(path.join(distDir, 'index.js'));
+    const jsContent = jsContentRaw.toString();
+    expect(jsContent.split('\n').length).toBeLessThan(10);
   }, 40000);
 });

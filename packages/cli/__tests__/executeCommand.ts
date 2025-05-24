@@ -10,11 +10,12 @@ type PromptHandler = (
 export function executeCommandInteractive(
   bin: string,
   args: string[],
-  onPrompt: PromptHandler
+  onPrompt: PromptHandler,
+  cwd?: string
 ): Promise<{ stdout: string; stderr: string; code: number }> {
   return new Promise(async (resolve, reject) => {
     const child = spawn('node', [bin, ...args], {
-      cwd: path.resolve(__dirname, './'),
+      cwd: cwd || path.resolve(__dirname, './'),
       stdio: ['pipe', 'pipe', 'pipe'],
       env: { ...process.env, CI: '1' },
     });
@@ -38,7 +39,7 @@ export function executeCommandInteractive(
 
     child.stderr.on('data', (data) => {
       // in case of debuggers it might lead them here. hence commenting.
-      // stderr += data.toString();
+      stderr += data.toString();
     });
 
     child.on('close', (code: number) => {
