@@ -3,7 +3,7 @@ name: Publish CLI to npm
 on:
   push:
     branches:
-      - rayan-dev
+      - main
 
 jobs:
   publish:
@@ -32,5 +32,5 @@ jobs:
       - name: Run semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: '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'
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
