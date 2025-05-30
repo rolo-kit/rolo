@@ -34,7 +34,11 @@ jobs:
         run: npm install --no-save semantic-release @semantic-release/changelog @semantic-release/commit-analyzer @semantic-release/release-notes-generator @semantic-release/npm @semantic-release/github @semantic-release/git conventional-changelog-cli
         working-directory: packages/cli
 
-      - name: Ensure CHANGELOG.md exists
+      - name: Install conventional CLI for changelog management
+        run: npm install -g conventional-changelog
+        working-directory: packages/cli
+
+      - name: Create CHANGELOG.md
         run: |
           npx conventional-changelog -p angular -i CHANGELOG.md -s
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
