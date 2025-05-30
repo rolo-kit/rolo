@@ -38,11 +38,6 @@ jobs:
         run: npm install -g conventional-changelog
         working-directory: packages/cli
 
-      - name: Create CHANGELOG.md
-        run: |
-          npx conventional-changelog -p angular -i CHANGELOG.md -s
-        working-directory: packages/cli
-
       - name: Run semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -50,6 +45,12 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
         working-directory: packages/cli
+
+      - name: Create CHANGELOG.md
+        run: |
+          npx conventional-changelog -p angular -i CHANGELOG.md -s
+        working-directory: packages/cli
+
       - name: Commit and push changes
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
