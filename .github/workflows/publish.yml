@@ -28,9 +28,11 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+        working-directory: packages/cli
 
       - name: Install semantic-release and plugins
         run: npm install --no-save semantic-release @semantic-release/changelog @semantic-release/commit-analyzer @semantic-release/release-notes-generator @semantic-release/npm @semantic-release/github @semantic-release/git
+        working-directory: packages/cli
 
       - name: Run semantic-release
         env:
@@ -38,6 +40,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
+        working-directory: packages/cli
       - name: Commit and push changes
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
