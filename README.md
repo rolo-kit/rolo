@@ -12,6 +12,7 @@ Rolo is a modern CLI tool designed to streamline your web development workflow. 
 - **Quick Builds**: Build your projects rapidly with optimized configurations for both development and production.
 - **Template Support**: Choose from React and Vanilla JS templates to kickstart your project.
 - **Easy CLI Commands**: Simple and intuitive commands for all major actions.
+- **Easy Configuration**: Manage extension settings and permissions easily with `rolo config` for robust, safe, and interactive project configuration.
 
 ## Getting Started
 
@@ -64,10 +65,58 @@ To run and test the Rolo CLI locally, use Node.js 20. Follow these steps:
    ```
 
 4. **Verify Node.js version** (should be 20):
+
    ```sh
    node -v
    # v20.x.x
    ```
+
+5. `rolo config []` Command
+
+The `rolo config` command lets you safely update, merge, append, or remove keys in your `rolo.config.json` for your extension project. It supports both interactive and non-interactive usage, robust value parsing, and safe merging for arrays and objects.
+
+**Usage:**
+
+```sh
+rolo config [options]
+```
+
+**Options:**
+
+- `-k, --key <key>`: Config key to set or remove
+- `-v, --value <value>`: Value to set for the key (supports JSON, arrays, or strings)
+- `-a, --add`: Append/merge value to existing array/object (deduplicates arrays)
+- `-r, --remove`: Remove a key from `rolo.config.json`
+
+**Examples:**
+
+- Set a string value:
+  ```sh
+  rolo config -k name -v "My Extension"
+  ```
+- Set an array (e.g., permissions):
+  ```sh
+  rolo config -k permissions -v '["storage","tabs"]'
+  ```
+- Append to an array (deduplicates):
+  ```sh
+  rolo config -k permissions -v '["notifications"]' --add
+  ```
+- Merge an object:
+  ```sh
+  rolo config -k options -v '{"foo":1}' --add
+  ```
+- Remove a key:
+  ```sh
+  rolo config -r -k permissions
+  ```
+
+**Best Practices:**
+
+- Use JSON for complex values (arrays/objects).
+- Use `--add` to merge/append instead of replacing arrays/objects.
+- All config changes are safely merged and written to `rolo.config.json`.
+- **You can also manually edit `rolo.config.json` in your project root if you prefer direct control.**
 
 You can now use the `rolo` command globally for local development and testing.
 
@@ -78,6 +127,7 @@ You can now use the `rolo` command globally for local development and testing.
 - `rolo init` – Scaffold a new project
 - `rolo dev` – Start development server with HMR
 - `rolo build` – Build the project for production
+- `rolo config [options]` – Update and manage your extension's configuration (see below)
 
 ## Templates
 
