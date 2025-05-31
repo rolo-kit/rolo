@@ -34,9 +34,8 @@ jobs:
         run: npm install --no-save semantic-release @semantic-release/changelog @semantic-release/commit-analyzer @semantic-release/release-notes-generator @semantic-release/npm @semantic-release/github @semantic-release/git conventional-changelog-cli
         working-directory: packages/cli
 
-      - name: Install conventional CLI for changelog management
-        run: npm install -g conventional-changelog
-        working-directory: packages/cli
+      - name: Install conventional-changelog and preset
+        run: npm install -g conventional-changelog conventional-changelog-angular
 
       - name: Run semantic-release
         env:
@@ -46,10 +45,21 @@ jobs:
         run: npx semantic-release
         working-directory: packages/cli
 
-      - name: Create CHANGELOG.md
+      - name: Create packages/cli/CHANGELOG.md
         run: |
-          npx conventional-changelog -p angular -i CHANGELOG.md -s
-        working-directory: packages/cli
+          npx conventional-changelog -p angular -i packages/cli/CHANGELOG.md -s
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          if [ -f packages/cli/CHANGELOG.md ]; then
+            git add packages/cli/CHANGELOG.md
+            git commit -m "chore(changelog): update [skip ci]" || echo "No changes to commit"
+            git push origin HEAD:rayan-dev
+          else
+            echo "No CHANGELOG.md to commit"
+          fi
 
       - name: Commit and push changes
         run: |
