@@ -141,4 +141,15 @@ You can now use the `rolo` command globally for local development and testing.
 
 ---
 
-Feel free to contribute or open issues to help improve Rolo!
+## Contributing
+
+We welcome contributions! To get started:
+
+1. **Fork the repository** on GitHub and clone your fork locally.
+2. **Create a new branch** for your feature or fix.
+3. **Write documentation** for your changes. You can use the `rolo-generate-docs` command to help generate or update documentation.
+4. **Commit your changes** and push your branch to your fork.
+5. **Open a Pull Request (PR)** to the main repository. Please ensure your code is well-documented and tested.
+6. Your PR will be reviewed by a maintainer. Once approved, it will be merged.
+
+Thank you for helping improve Rolo!
