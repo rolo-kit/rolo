@@ -1,6 +1,6 @@
 {
   "name": "rolo-cli",
-  "version": "1.0.4",
+  "version": "1.1.20",
   "description": "",
   "bin": {
     "rolo": "./dist/bin/rolo.js"
