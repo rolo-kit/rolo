@@ -21,4 +21,4 @@ jobs:
         run: npm install
         working-directory: packages/cli
       - name: Run Prettier
-        run: npx prettier --check .
+        run: npx prettier --check . --ignore-path .prettierignore

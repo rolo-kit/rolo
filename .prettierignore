@@ -1,3 +1,6 @@
 node_modules/
 dist/
 packages/cli/dist/
+packages/cli/LICENSE
+*.md
+**/*.md
